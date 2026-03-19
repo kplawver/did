@@ -2,6 +2,8 @@
 
 A personal journal app built with Rails 8.1 and the Hotwire stack. Track what you did, capture thoughts and ideas, manage todos, and review your days.
 
+**WARNING**: Because of pricing things, this repo will be moving to Postgres _VERY_ soon, so you've been warned!
+
 ## Prerequisites
 
 - [mise](https://mise.jdx.dev/) (or install Ruby 4.0.2 and Node 24 manually)
