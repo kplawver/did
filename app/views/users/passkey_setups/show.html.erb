@@ -1,0 +1,24 @@
+<div class="flex min-h-screen items-center justify-center bg-base-200">
+  <div class="card w-full max-w-md bg-base-100 shadow-xl">
+    <div class="card-body text-center">
+      <h2 class="card-title text-2xl justify-center">Set Up a Passkey</h2>
+      <p class="text-base-content/70 mt-2">
+        Passkeys let you sign in quickly and securely using your fingerprint, face, or device PIN. No password needed.
+      </p>
+
+      <div class="mt-6" data-controller="passkey" data-passkey-registration-url-value="<%= users_passkey_registrations_path %>" data-passkey-challenge-url-value="<%= new_users_passkey_registration_path %>" data-passkey-redirect-url-value="<%= authenticated_root_path %>">
+        <button class="btn btn-primary w-full" data-action="passkey#register">
+          Register a Passkey
+        </button>
+      </div>
+
+      <div class="mt-4">
+        <%= button_to "Skip for now", skip_users_passkey_setup_path, method: :post, class: "btn btn-ghost btn-sm" %>
+      </div>
+
+      <p class="text-xs text-base-content/50 mt-4">
+        You can always add passkeys later from your profile settings.
+      </p>
+    </div>
+  </div>
+</div>

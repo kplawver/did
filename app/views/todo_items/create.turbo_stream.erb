@@ -1,0 +1,5 @@
+<%= turbo_stream.append "todo_list" do %>
+  <%= render "journal/todo_item", todo_item: @todo_item %>
+<% end %>
+
+<%= turbo_stream.remove "todo_empty_state" %>

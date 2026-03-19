@@ -65,6 +65,13 @@ bin/ci                   # Runs: setup → rubocop → bundler-audit → yarn au
 - Passkey support via `webauthn` gem — users can register/manage passkeys from profile
 - Environment variables for production: `WEBAUTHN_ORIGIN`, `WEBAUTHN_RP_ID`
 
+## Core Domain Models
+
+- **TodoItem** — belongs_to user; title, due_date, completed, position; rollover via query-time `due_on_or_before`; hashtag extraction from title
+- **Entry** — belongs_to user; body (markdown, rendered to body_html via redcarpet), tag enum (did/thought/idea/win/emotion), posted_on; hashtag extraction from body
+- **Tag / Tagging** — polymorphic hashtag folksonomy; tags extracted from Entry body and TodoItem title; enum tag names excluded from extraction
+- **Journal** — two-column layout (todos left, thought stream right) with week-based day navigation; today shows rollover todos + completed-today + today's entries; past days scoped to that date
+
 ## Code Style
 
 Uses `rubocop-rails-omakase` — the Rails team's opinionated style guide. Run `bin/rubocop` before committing.

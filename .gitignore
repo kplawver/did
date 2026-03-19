@@ -10,6 +10,10 @@
 # Ignore all environment files.
 /.env*
 
+# Oh .DS_Store
+/.DS_Store
+/*/.DS_Store
+
 # Ignore all logfiles and tempfiles.
 /log/*
 /tmp/*
@@ -41,6 +45,9 @@
 !.yarn/releases
 !.yarn/sdks
 !.yarn/versions
+
+# Handoff documents (session context for Claude Code)
+/.handoffs
 
 # Ignore key files for decrypting credentials and more.
 /config/*.key

@@ -1,0 +1,19 @@
+<%= turbo_frame_tag dom_id(todo_item) do %>
+  <div class="flex items-center gap-2 p-2 hover:bg-base-200 rounded-lg group">
+    <%= form_with model: todo_item, method: :patch, data: { controller: "todo-toggle", action: "change->todo-toggle#submit" } do |f| %>
+      <%= f.check_box :completed, class: "checkbox checkbox-sm", checked: todo_item.completed, data: { todo_toggle_target: "checkbox" } %>
+    <% end %>
+
+    <span class="flex-1 <%= 'line-through opacity-50' if todo_item.completed %>">
+      <%= todo_item.title %>
+    </span>
+
+    <% if todo_item.rolled_over? %>
+      <span class="badge badge-ghost badge-xs">from <%= todo_item.original_due_date.strftime("%-m/%-d") %></span>
+    <% end %>
+
+    <%= button_to todo_item_path(todo_item), method: :delete, class: "btn btn-ghost btn-xs opacity-0 group-hover:opacity-100", data: { turbo_confirm: "Delete this todo?" } do %>
+      &times;
+    <% end %>
+  </div>
+<% end %>

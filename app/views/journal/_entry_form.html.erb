@@ -1,0 +1,8 @@
+<div class="mt-2 pt-2 border-t border-base-300" data-controller="tag-selector">
+  <%= form_with model: Entry.new, url: entries_path, class: "flex gap-2", data: { action: "turbo:submit-end->tag-selector#reset" } do |f| %>
+    <%= f.hidden_field :posted_on, value: @date %>
+    <%= f.select :tag, Entry.tags.keys.map { |t| ["##{t}", t] }, {}, class: "select select-sm select-bordered", data: { tag_selector_target: "select", action: "change->tag-selector#updateColor" } %>
+    <%= f.text_field :body, placeholder: "What's on your mind?", class: "input input-sm input-bordered flex-1", autocomplete: "off", data: { tag_selector_target: "input" } %>
+    <%= f.submit "Post", class: "btn btn-primary btn-sm" %>
+  <% end %>
+</div>

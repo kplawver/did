@@ -1,0 +1,5 @@
+<%= turbo_stream.append "entry_stream" do %>
+  <%= render "journal/entry", entry: @entry %>
+<% end %>
+
+<%= turbo_stream.remove "entry_empty_state" %>

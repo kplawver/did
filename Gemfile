@@ -26,6 +26,9 @@ gem "jbuilder"
 gem "devise"
 gem "webauthn"
 
+# Markdown rendering
+gem "redcarpet"
+
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
 gem "tzinfo-data", platforms: %i[ windows jruby ]
 

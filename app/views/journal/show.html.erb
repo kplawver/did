@@ -1,0 +1,37 @@
+<div class="flex flex-col h-[calc(100vh-4rem)]">
+  <%= render "journal/week_nav" %>
+
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-4 p-4 flex-1 min-h-0">
+    <div class="flex flex-col min-h-0">
+      <h2 class="text-lg font-bold mb-2">Todos</h2>
+      <div class="flex-1 overflow-y-auto" id="todo_list">
+        <% if @todo_items.any? %>
+          <% @todo_items.each do |todo_item| %>
+            <%= render "journal/todo_item", todo_item: todo_item %>
+          <% end %>
+        <% else %>
+          <p class="text-base-content/50 italic p-4" id="todo_empty_state">What do you need to do today?</p>
+        <% end %>
+      </div>
+      <% if @date == Date.current %>
+        <%= render "journal/todo_form" %>
+      <% end %>
+    </div>
+
+    <div class="flex flex-col min-h-0">
+      <h2 class="text-lg font-bold mb-2">Stream</h2>
+      <div class="flex-1 overflow-y-auto" id="entry_stream">
+        <% if @entries.any? %>
+          <% @entries.each do |entry| %>
+            <%= render "journal/entry", entry: entry %>
+          <% end %>
+        <% else %>
+          <p class="text-base-content/50 italic p-4" id="entry_empty_state">What did you do today?</p>
+        <% end %>
+      </div>
+      <% if @date == Date.current %>
+        <%= render "journal/entry_form" %>
+      <% end %>
+    </div>
+  </div>
+</div>

@@ -3,7 +3,8 @@ import { Controller } from "@hotwired/stimulus"
 export default class extends Controller {
   static values = {
     challengeUrl: String,
-    registrationUrl: String
+    registrationUrl: String,
+    redirectUrl: String
   }
 
   async register() {
@@ -44,7 +45,11 @@ export default class extends Controller {
       })
 
       if (createResponse.ok) {
-        window.location.reload()
+        if (this.hasRedirectUrlValue) {
+          window.location.href = this.redirectUrlValue
+        } else {
+          window.location.reload()
+        }
       } else {
         const error = await createResponse.json()
         alert(`Failed to register passkey: ${error.error}`)

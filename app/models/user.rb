@@ -4,6 +4,8 @@ class User < ApplicationRecord
          :lockable, :trackable
 
   has_many :passkey_credentials, dependent: :destroy
+  has_many :todo_items, dependent: :destroy
+  has_many :entries, dependent: :destroy
 
   before_create { self.webauthn_id ||= SecureRandom.uuid }
 

@@ -3,6 +3,8 @@ require "rails_helper"
 RSpec.describe User, type: :model do
   describe "associations" do
     it { is_expected.to have_many(:passkey_credentials).dependent(:destroy) }
+    it { is_expected.to have_many(:todo_items).dependent(:destroy) }
+    it { is_expected.to have_many(:entries).dependent(:destroy) }
   end
 
   describe "validations" do
