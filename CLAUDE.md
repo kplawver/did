@@ -72,6 +72,25 @@ bin/ci                   # Runs: setup → rubocop → bundler-audit → yarn au
 - **Tag / Tagging** — polymorphic hashtag folksonomy; tags extracted from Entry body and TodoItem title; enum tag names excluded from extraction
 - **Journal** — two-column layout (todos left, thought stream right) with week-based day navigation; today shows rollover todos + completed-today + today's entries; past days scoped to that date
 
+## MCP Server (Claude Integration)
+
+- **Gem:** `actionmcp` — MCP server framework for Rails
+- **Transport:** Streamable HTTP, runs as a standalone Rack app via `bin/mcp` (port 62770)
+- **Auth:** Bearer token via per-user `api_token` column, managed from Edit Profile
+- **Gateway:** `app/mcp/application_gateway.rb` + `app/identifiers/bearer_token_identifier.rb`
+- **Tools:** `app/mcp/tools/` — `get_journal_day`, `get_todos`, `get_entries`, `search_entries` (all read-only)
+- **Config:** `config/mcp.yml`, `.mcp.json` (project-level Claude Code config)
+- **Docs:** `mcp/README.md`
+
+## JSON API
+
+Bearer token auth (`Authorization: Bearer <token>`), same token as MCP.
+
+- `GET /api/journal/:date` — full day view (todos + entries + summary)
+- `GET /api/todo_items` — todos with `?date=`, `?status=` filters
+- `GET /api/entries` — entries with `?date=`, `?from=`, `?to=`, `?tag=` filters
+- `GET /api/entries/search?q=` — keyword search in entry bodies
+
 ## Code Style
 
 Uses `rubocop-rails-omakase` — the Rails team's opinionated style guide. Run `bin/rubocop` before committing.

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_03_19_132203) do
+ActiveRecord::Schema[8.1].define(version: 2026_03_19_150752) do
   create_table "entries", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.text "body", null: false, collation: "utf8mb4_0900_bin"
     t.text "body_html", collation: "utf8mb4_0900_bin"
@@ -71,6 +71,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_03_19_132203) do
   end
 
   create_table "users", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
+    t.string "api_token", collation: "utf8mb4_0900_bin"
     t.datetime "created_at", null: false
     t.datetime "current_sign_in_at"
     t.string "current_sign_in_ip", collation: "utf8mb4_0900_bin"
@@ -89,6 +90,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_03_19_132203) do
     t.datetime "updated_at", null: false
     t.string "username", null: false, collation: "utf8mb4_0900_bin"
     t.string "webauthn_id", default: -> { "(uuid())" }, null: false, collation: "utf8mb4_0900_bin"
+    t.index ["api_token"], name: "index_users_on_api_token", unique: true
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
     t.index ["unlock_token"], name: "index_users_on_unlock_token", unique: true

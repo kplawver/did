@@ -67,6 +67,31 @@
         </button>
       </div>
 
+      <div class="divider">API Token</div>
+      <div id="api-token-management">
+        <% if current_user.api_token.present? %>
+          <div class="form-control mb-4">
+            <label class="label">
+              <span class="label-text">Your API Token</span>
+            </label>
+            <div class="join w-full">
+              <input type="text" value="<%= current_user.api_token %>" readonly class="input input-bordered join-item w-full font-mono text-sm" id="api-token-display" />
+              <button type="button" class="btn join-item" onclick="navigator.clipboard.writeText(document.getElementById('api-token-display').value).then(() => this.textContent = 'Copied!').then(() => setTimeout(() => this.textContent = 'Copy', 2000))">Copy</button>
+            </div>
+            <label class="label">
+              <span class="label-text-alt">Use this token with the MCP server or JSON API</span>
+            </label>
+          </div>
+          <div class="flex gap-2">
+            <%= button_to "Regenerate Token", users_api_token_path, method: :post, class: "btn btn-outline btn-sm flex-1", data: { turbo_confirm: "This will invalidate your current token. Continue?" } %>
+            <%= button_to "Revoke Token", users_api_token_path, method: :delete, class: "btn btn-outline btn-error btn-sm flex-1", data: { turbo_confirm: "This will revoke API access. Continue?" } %>
+          </div>
+        <% else %>
+          <p class="text-sm text-base-content/60 mb-4">Generate an API token to connect Claude or other tools to your journal.</p>
+          <%= button_to "Generate API Token", users_api_token_path, method: :post, class: "btn btn-outline w-full" %>
+        <% end %>
+      </div>
+
       <div class="divider">Danger Zone</div>
       <div class="text-center">
         <p class="text-sm mb-2">Unhappy? <%= button_to "Cancel my account", registration_path(resource_name), data: { turbo_confirm: "Are you sure?" }, method: :delete, class: "btn btn-error btn-sm" %></p>

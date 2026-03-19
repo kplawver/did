@@ -3,6 +3,10 @@ class User < ApplicationRecord
          :recoverable, :rememberable, :validatable,
          :lockable, :trackable
 
+  def regenerate_api_token
+    update!(api_token: self.class.generate_unique_secure_token)
+  end
+
   has_many :passkey_credentials, dependent: :destroy
   has_many :todo_items, dependent: :destroy
   has_many :entries, dependent: :destroy

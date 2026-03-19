@@ -29,6 +29,9 @@ gem "webauthn"
 # Markdown rendering
 gem "redcarpet"
 
+# MCP server for Claude integration
+gem "actionmcp"
+
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
 gem "tzinfo-data", platforms: %i[ windows jruby ]
 

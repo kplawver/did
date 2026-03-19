@@ -1,24 +1,101 @@
-# README
+# Did
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+A personal journal app built with Rails 8.1 and the Hotwire stack. Track what you did, capture thoughts and ideas, manage todos, and review your days.
 
-Things you may want to cover:
+## Prerequisites
 
-* Ruby version
+- [mise](https://mise.jdx.dev/) (or install Ruby 4.0.2 and Node 24 manually)
+- [Dolt](https://docs.dolthub.com/introduction/installation) (MySQL-compatible database)
+- [Yarn](https://yarnpkg.com/)
 
-* System dependencies
+## MCP
 
-* Configuration
+See [the MCP README](mcp/README.md)
 
-* Database creation
+## Setup
 
-* Database initialization
+### 1. Install mise
 
-* How to run the test suite
+```bash
+# macOS
+brew install mise
 
-* Services (job queues, cache servers, search engines, etc.)
+# Or follow https://mise.jdx.dev/getting-started.html
+```
 
-* Deployment instructions
+Activate mise in your shell (add to `~/.zshrc` or `~/.bashrc`):
 
-* ...
+```bash
+eval "$(mise activate zsh)"  # or bash/fish
+```
+
+### 2. Install tool versions
+
+From the project directory:
+
+```bash
+mise install
+```
+
+This installs Ruby 4.0.2 and Node 24 as defined in `mise.toml`.
+
+### 3. Install Dolt
+
+```bash
+# macOS
+brew install dolt
+```
+
+Initialize a Dolt data directory (one-time):
+
+```bash
+mkdir -p ~/doltdb && cd ~/doltdb && dolt init
+```
+
+Start the Dolt SQL server:
+
+```bash
+cd ~/doltdb && dolt sql-server -u root
+```
+
+Dolt runs on port 3306 by default, just like MySQL. It needs to be running whenever you're working with the app.
+
+### 4. Install dependencies and prepare the database
+
+```bash
+bin/setup --skip-server
+```
+
+This installs Ruby and JS dependencies, creates the database, and runs migrations.
+
+## Development
+
+Start all processes (Rails server, JS/CSS watchers, MCP server):
+
+```bash
+bin/dev
+```
+
+The app will be available at `http://localhost:3000`.
+
+## Testing
+
+```bash
+bundle exec rspec              # Run all specs
+bundle exec rspec spec/models/ # Run model specs only
+```
+
+## Linting
+
+```bash
+bin/rubocop    # Check style
+bin/rubocop -a # Auto-correct
+```
+
+## Full CI suite
+
+```bash
+bin/ci
+```
+
+Runs setup, rubocop, bundler-audit, yarn audit, brakeman, rspec, and a seed check.

@@ -1,0 +1,29 @@
+# ActionMCP Configuration
+
+shared:
+  authentication: ["bearer_token"]
+
+  server_instructions:
+    - "Use this server to access your Did journal — todos, entries, and daily summaries"
+    - "Helpful for daily wrapups, pattern analysis, and synthesizing journal data"
+
+  profiles:
+    primary:
+      tools:
+        - all
+      prompts: []
+      resources: []
+      options:
+        list_changed: false
+        logging_enabled: true
+        resources_subscribe: false
+
+development:
+  session_store_type: volatile
+
+test:
+  authentication: ["none"]
+  session_store_type: volatile
+
+production:
+  authentication: ["bearer_token"]

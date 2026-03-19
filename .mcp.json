@@ -1,0 +1,11 @@
+{
+  "mcpServers": {
+    "did": {
+      "type": "http",
+      "url": "${DID_MCP_URL:-http://localhost:62770}/",
+      "headers": {
+        "Authorization": "Bearer ${DID_API_TOKEN}"
+      }
+    }
+  }
+}

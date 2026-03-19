@@ -35,4 +35,36 @@ RSpec.describe User, type: :model do
       expect(user.webauthn_id).to be_present
     end
   end
+
+  describe "api_token" do
+    it "does not generate a token on create" do
+      user = create(:user)
+      expect(user.api_token).to be_nil
+    end
+
+    it "generates a unique token on demand" do
+      user = create(:user)
+      user.regenerate_api_token
+      expect(user.api_token).to be_present
+      expect(user.api_token.length).to be >= 24
+    end
+
+    it "regenerates a different token each time" do
+      user = create(:user)
+      user.regenerate_api_token
+      first_token = user.api_token
+
+      user.regenerate_api_token
+      expect(user.api_token).not_to eq(first_token)
+    end
+
+    it "can be revoked by setting to nil" do
+      user = create(:user)
+      user.regenerate_api_token
+      expect(user.api_token).to be_present
+
+      user.update!(api_token: nil)
+      expect(user.api_token).to be_nil
+    end
+  end
 end

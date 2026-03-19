@@ -9,6 +9,15 @@ Rails.application.routes.draw do
     resource :passkey_setup, only: [ :show ] do
       post :skip
     end
+    resource :api_token, only: [ :create, :destroy ]
+  end
+
+  namespace :api do
+    get "journal/:date", to: "journal#show", as: :journal, constraints: { date: /\d{4}-\d{2}-\d{2}/ }
+    resources :todo_items, only: [ :index ]
+    resources :entries, only: [ :index ] do
+      collection { get :search }
+    end
   end
 
   authenticated :user do
