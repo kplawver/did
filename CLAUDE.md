@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-"Did" is a Rails 8.1.2 application using Ruby 4.0.2, PostgreSQL, and the Hotwire stack (Turbo + Stimulus). Asset pipeline uses Propshaft with cssbundling-rails (Tailwind + DaisyUI) and jsbundling-rails (esbuild).
+"Did" is a Rails 8.1.2 application using Ruby 4.0.2, Dolt (MySQL-compatible, trilogy adapter), and the Hotwire stack (Turbo + Stimulus). Asset pipeline uses Propshaft with cssbundling-rails (Tailwind + DaisyUI) and jsbundling-rails (esbuild).
 
 ## Common Commands
 
@@ -32,8 +32,9 @@ bin/brakeman             # Security scan
 bin/bundler-audit        # Gem vulnerability audit
 ```
 
-### Database
+### Database (Dolt)
 ```bash
+dolt sql-server          # Start Dolt SQL server (must be running for Rails)
 bin/rails db:prepare     # Create + migrate (idempotent)
 bin/rails db:migrate     # Run pending migrations
 bin/rails db:reset       # Drop, create, migrate, seed
@@ -73,7 +74,7 @@ Uses `rubocop-rails-omakase` — the Rails team's opinionated style guide. Run `
 Four jobs run on PRs and pushes to main:
 1. **scan_ruby** — Brakeman + bundler-audit
 2. **lint** — RuboCop
-3. **test** — RSpec (non-system) against PostgreSQL service container
+3. **test** — RSpec (non-system) against MySQL service container
 4. **system-test** — RSpec system specs (uploads failure screenshots as artifacts)
 
 ## Deployment
