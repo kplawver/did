@@ -1,0 +1,8 @@
+name: did
+services:
+  - environment_slug: ruby
+    github:
+      branch: main
+      deploy_on_push: true
+      repo: kplawver/did
+    name: did
