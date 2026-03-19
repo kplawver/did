@@ -1,0 +1,80 @@
+<div class="flex min-h-screen items-center justify-center bg-base-200">
+  <div class="card w-full max-w-md bg-base-100 shadow-xl">
+    <div class="card-body">
+      <h2 class="card-title text-2xl justify-center">Edit Profile</h2>
+
+      <%= form_for(resource, as: resource_name, url: registration_path(resource_name), html: { method: :put }, class: "space-y-4") do |f| %>
+        <%= render "devise/shared/error_messages", resource: resource %>
+
+        <div class="form-control">
+          <%= f.label :username, class: "label" %>
+          <%= f.text_field :username, autocomplete: "username", class: "input input-bordered w-full" %>
+        </div>
+
+        <div class="form-control">
+          <%= f.label :email, class: "label" %>
+          <%= f.email_field :email, autocomplete: "email", class: "input input-bordered w-full" %>
+        </div>
+
+        <div class="divider">Change Password</div>
+
+        <div class="form-control">
+          <%= f.label :password, "New password", class: "label" %>
+          <%= f.password_field :password, autocomplete: "new-password", class: "input input-bordered w-full" %>
+          <label class="label">
+            <span class="label-text-alt">Leave blank if you don't want to change it</span>
+          </label>
+        </div>
+
+        <div class="form-control">
+          <%= f.label :password_confirmation, class: "label" %>
+          <%= f.password_field :password_confirmation, autocomplete: "new-password", class: "input input-bordered w-full" %>
+        </div>
+
+        <div class="divider">Confirm Changes</div>
+
+        <div class="form-control">
+          <%= f.label :current_password, class: "label" %>
+          <%= f.password_field :current_password, autocomplete: "current-password", class: "input input-bordered w-full" %>
+          <label class="label">
+            <span class="label-text-alt">We need your current password to confirm changes</span>
+          </label>
+        </div>
+
+        <div class="form-control mt-6">
+          <%= f.submit "Update", class: "btn btn-primary w-full" %>
+        </div>
+      <% end %>
+
+      <div class="divider">Passkeys</div>
+      <div id="passkey-management" data-controller="passkey" data-passkey-registration-url-value="<%= users_passkey_registrations_path %>" data-passkey-challenge-url-value="<%= new_users_passkey_registration_path %>">
+        <div id="passkey-list">
+          <% if current_user.passkey_credentials.any? %>
+            <ul class="list-disc pl-5 mb-4">
+              <% current_user.passkey_credentials.each do |credential| %>
+                <li class="flex items-center justify-between mb-2">
+                  <span><%= credential.nickname || "Passkey" %> — last used <%= credential.last_used_at ? time_ago_in_words(credential.last_used_at) + " ago" : "never" %></span>
+                  <%= button_to "Remove", users_passkey_registration_path(credential), method: :delete, class: "btn btn-xs btn-error", data: { turbo_confirm: "Remove this passkey?" } %>
+                </li>
+              <% end %>
+            </ul>
+          <% else %>
+            <p class="text-sm text-base-content/60 mb-4">No passkeys registered yet.</p>
+          <% end %>
+        </div>
+        <button class="btn btn-outline w-full" data-action="passkey#register">
+          Register a New Passkey
+        </button>
+      </div>
+
+      <div class="divider">Danger Zone</div>
+      <div class="text-center">
+        <p class="text-sm mb-2">Unhappy? <%= button_to "Cancel my account", registration_path(resource_name), data: { turbo_confirm: "Are you sure?" }, method: :delete, class: "btn btn-error btn-sm" %></p>
+      </div>
+
+      <div class="text-center text-sm mt-4">
+        <%= link_to "Back", :back, class: "link link-hover" %>
+      </div>
+    </div>
+  </div>
+</div>

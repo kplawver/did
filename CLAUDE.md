@@ -4,22 +4,24 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-"Did" is a Rails 8.1.2 application using Ruby 4.0.x, PostgreSQL, and the Hotwire stack (Turbo + Stimulus). Asset pipeline uses Propshaft with cssbundling-rails and jsbundling-rails.
+"Did" is a Rails 8.1.2 application using Ruby 4.0.2, PostgreSQL, and the Hotwire stack (Turbo + Stimulus). Asset pipeline uses Propshaft with cssbundling-rails (Tailwind + DaisyUI) and jsbundling-rails (esbuild).
 
 ## Common Commands
 
 ### Development
 ```bash
 bin/setup              # Initial setup (install deps, prepare DB, clear logs)
-bin/dev                # Start development server
+bin/dev                # Start development server (foreman: Rails + CSS + JS watchers)
+yarn build             # One-off build of CSS + JS assets
 ```
 
 ### Testing
 ```bash
-bin/rails test                        # Run all unit/integration tests
-bin/rails test test/models/foo_test.rb  # Run a single test file
-bin/rails test test/models/foo_test.rb:42  # Run a single test by line number
-bin/rails test:system                 # Run system tests (Selenium/Capybara)
+bundle exec rspec                          # Run all specs
+bundle exec rspec spec/models/             # Run model specs
+bundle exec rspec spec/requests/           # Run request specs
+bundle exec rspec spec/models/user_spec.rb # Run a single spec file
+bundle exec rspec spec/models/user_spec.rb:10  # Run a single example by line
 ```
 
 ### Linting & Security
@@ -39,16 +41,28 @@ bin/rails db:reset       # Drop, create, migrate, seed
 
 ### Full CI Suite (Local)
 ```bash
-bin/ci                   # Runs: setup → rubocop → bundler-audit → yarn audit → brakeman → tests → seed check
+bin/ci                   # Runs: setup → rubocop → bundler-audit → yarn audit → brakeman → rspec → seed check
 ```
 
 ## Architecture
 
-- **Frontend:** Hotwire (Turbo + Stimulus), Propshaft asset pipeline
+- **Frontend:** Hotwire (Turbo + Stimulus), Propshaft asset pipeline, Tailwind CSS + DaisyUI
+- **JS bundling:** esbuild via jsbundling-rails
+- **CSS bundling:** Tailwind CLI via cssbundling-rails
+- **Authentication:** Devise (email/password) + WebAuthn passkeys
 - **Background jobs:** Solid Queue (database-backed, runs in Puma process)
 - **Caching:** Solid Cache (database-backed)
 - **WebSockets:** Solid Cable (database-backed)
+- **Testing:** RSpec, FactoryBot, Shoulda Matchers, Faker
 - **Production multi-database:** Separate databases for primary, cache, queue, and cable
+
+## Authentication
+
+- Devise with `:database_authenticatable`, `:registerable`, `:recoverable`, `:rememberable`, `:validatable`, `:lockable`, `:trackable`
+- No `:confirmable` — users can sign in immediately after registration
+- Account locks after 10 failed attempts, unlocks via email or after 1 hour
+- Passkey support via `webauthn` gem — users can register/manage passkeys from profile
+- Environment variables for production: `WEBAUTHN_ORIGIN`, `WEBAUTHN_RP_ID`
 
 ## Code Style
 
@@ -59,8 +73,8 @@ Uses `rubocop-rails-omakase` — the Rails team's opinionated style guide. Run `
 Four jobs run on PRs and pushes to main:
 1. **scan_ruby** — Brakeman + bundler-audit
 2. **lint** — RuboCop
-3. **test** — Rails tests against PostgreSQL service container
-4. **system-test** — Selenium system tests (uploads failure screenshots as artifacts)
+3. **test** — RSpec (non-system) against PostgreSQL service container
+4. **system-test** — RSpec system specs (uploads failure screenshots as artifacts)
 
 ## Deployment
 

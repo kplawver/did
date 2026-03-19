@@ -18,11 +18,47 @@
     <link rel="icon" href="/icon.svg" type="image/svg+xml">
     <link rel="apple-touch-icon" href="/icon.png">
 
-    <%# Includes all stylesheet files in app/assets/stylesheets %>
-    <%= stylesheet_link_tag :app, "data-turbo-track": "reload" %>
+    <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
+    <%= javascript_include_tag "application", "data-turbo-track": "reload", type: "module" %>
   </head>
 
   <body>
+    <div class="navbar bg-base-100 shadow-sm">
+      <div class="flex-1">
+        <%= link_to "Did", root_path, class: "btn btn-ghost text-xl" %>
+      </div>
+      <div class="flex-none">
+        <% if user_signed_in? %>
+          <div class="dropdown dropdown-end">
+            <div tabindex="0" role="button" class="btn btn-ghost">
+              <%= current_user.username %>
+            </div>
+            <ul tabindex="0" class="dropdown-content menu bg-base-100 rounded-box z-10 w-52 p-2 shadow">
+              <li><%= link_to "Edit Profile", edit_user_registration_path %></li>
+              <li><%= link_to "Sign Out", destroy_user_session_path, data: { turbo_method: :delete } %></li>
+            </ul>
+          </div>
+        <% else %>
+          <%= link_to "Sign In", new_user_session_path, class: "btn btn-ghost btn-sm" %>
+          <%= link_to "Sign Up", new_user_registration_path, class: "btn btn-primary btn-sm" %>
+        <% end %>
+      </div>
+    </div>
+
+    <% if notice.present? %>
+      <div class="toast toast-top toast-end z-50">
+        <div class="alert alert-success">
+          <span><%= notice %></span>
+        </div>
+      </div>
+    <% end %>
+    <% if alert.present? %>
+      <div class="toast toast-top toast-end z-50">
+        <div class="alert alert-error">
+          <span><%= alert %></span>
+        </div>
+      </div>
+    <% end %>
     <%= yield %>
   </body>
 </html>
