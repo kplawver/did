@@ -53,7 +53,7 @@ services:
 
 databases:
   - name: db
-    engine: MYSQL
-    version: "8"
+    engine: PG
+    version: "18"
     size: db-s-dev-database
     num_nodes: 1

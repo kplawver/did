@@ -54,13 +54,15 @@ jobs:
     runs-on: ubuntu-latest
 
     services:
-      mysql:
-        image: mysql:8.0
+      postgres:
+        image: postgres:18
         env:
-          MYSQL_ALLOW_EMPTY_PASSWORD: "yes"
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: did_test
         ports:
-          - 3306:3306
-        options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
+          - 5432:5432
+        options: --health-cmd="pg_isready -U postgres" --health-interval=10s --health-timeout=5s --health-retries=3
 
     steps:
       - name: Checkout code
@@ -87,22 +89,24 @@ jobs:
         env:
           RAILS_ENV: test
           DB_HOST: 127.0.0.1
-          DB_PORT: 3306
-          DB_USERNAME: root
-          DB_PASSWORD: ""
+          DB_PORT: 5432
+          DB_USERNAME: postgres
+          DB_PASSWORD: postgres
         run: bin/rails db:test:prepare && bundle exec rspec --exclude-pattern "spec/system/**/*_spec.rb"
 
   system-test:
     runs-on: ubuntu-latest
 
     services:
-      mysql:
-        image: mysql:8.0
+      postgres:
+        image: postgres:18
         env:
-          MYSQL_ALLOW_EMPTY_PASSWORD: "yes"
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: did_test
         ports:
-          - 3306:3306
-        options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
+          - 5432:5432
+        options: --health-cmd="pg_isready -U postgres" --health-interval=10s --health-timeout=5s --health-retries=3
 
     steps:
       - name: Checkout code
@@ -129,9 +133,9 @@ jobs:
         env:
           RAILS_ENV: test
           DB_HOST: 127.0.0.1
-          DB_PORT: 3306
-          DB_USERNAME: root
-          DB_PASSWORD: ""
+          DB_PORT: 5432
+          DB_USERNAME: postgres
+          DB_PASSWORD: postgres
         run: bin/rails db:test:prepare && ([ -d spec/system ] && bundle exec rspec spec/system || echo "No system specs found, skipping")
 
       - name: Keep screenshots from failed system tests
