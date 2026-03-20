@@ -5,6 +5,7 @@ class JournalController < ApplicationController
   def show
     @week_start = @date.beginning_of_week(:monday)
     @week_dates = (0..6).map { |i| @week_start + i.days }
+    @days_with_content = days_with_content
 
     if @date == Date.current
       @todo_items = current_user.todo_items
@@ -24,6 +25,21 @@ class JournalController < ApplicationController
   end
 
   private
+
+  def days_with_content
+    past_dates = @week_dates.select { |d| d < Date.current }
+    days = [ Date.current ]
+
+    if past_dates.any?
+      days += current_user.entries.where(posted_on: past_dates).distinct.pluck(:posted_on)
+      days += current_user.todo_items.where(due_date: past_dates).distinct.pluck(:due_date)
+      days += current_user.todo_items
+        .where(completed: true, completed_at: past_dates.min.beginning_of_day..past_dates.max.end_of_day)
+        .pluck(:completed_at).map(&:to_date)
+    end
+
+    days.uniq
+  end
 
   def set_date
     @date = if params[:date].present?

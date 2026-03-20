@@ -16,10 +16,10 @@ class TodoItemsController < ApplicationController
   end
 
   def update
-    if params[:todo_item][:completed] == "1"
-      @todo_item.complete!
+    if params[:todo_item].key?(:completed)
+      params[:todo_item][:completed] == "1" ? @todo_item.complete! : @todo_item.uncomplete!
     else
-      @todo_item.uncomplete!
+      @todo_item.update!(todo_item_params)
     end
 
     respond_to do |format|
