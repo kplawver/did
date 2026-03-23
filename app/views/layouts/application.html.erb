@@ -46,16 +46,18 @@
     </div>
 
     <% if notice.present? %>
-      <div class="toast toast-top toast-end z-50">
+      <div class="toast toast-top toast-end z-50" data-controller="flash">
         <div class="alert alert-success">
           <span><%= notice %></span>
+          <button class="btn btn-ghost btn-xs" data-action="flash#dismiss">✕</button>
         </div>
       </div>
     <% end %>
     <% if alert.present? %>
-      <div class="toast toast-top toast-end z-50">
+      <div class="toast toast-top toast-end z-50" data-controller="flash">
         <div class="alert alert-error">
           <span><%= alert %></span>
+          <button class="btn btn-ghost btn-xs" data-action="flash#dismiss">✕</button>
         </div>
       </div>
     <% end %>

@@ -1,5 +1,5 @@
 <div class="mt-2 pt-2 border-t border-base-300" data-controller="todo-form">
-  <%= form_with model: TodoItem.new, url: todo_items_path, class: "flex gap-2", data: { action: "turbo:submit-end->todo-form#reset" } do |f| %>
+  <%= form_with model: TodoItem.new, url: todo_items_path, class: "flex items-center gap-2", data: { action: "turbo:submit-end->todo-form#reset" } do |f| %>
   <%= f.text_field :title, placeholder: "Add a todo...", class: "input input-sm input-bordered flex-1", autocomplete: "off", data: { todo_form_target: "input" } %>
   <%= f.select :due_date,
                 (0..13).map { |i| d = Date.current + i.days; [i == 0 ? "Today" : d.strftime("%a %-d"), d] },
