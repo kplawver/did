@@ -9,7 +9,7 @@
 
 require "bundler/setup"
 
-port = ARGV[0] || 62_770
+port = ARGV[0] || ENV["PORT"] || 62_770
 rackup = File.expand_path("../mcp/config.ru", __dir__)
 
 # Prefer Falcon for better concurrency.
