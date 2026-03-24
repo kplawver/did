@@ -2,12 +2,10 @@
 
 A personal journal app built with Rails 8.1 and the Hotwire stack. Track what you did, capture thoughts and ideas, manage todos, and review your days.
 
-**WARNING**: Because of pricing things, this repo will be moving to Postgres _VERY_ soon, so you've been warned!
-
 ## Prerequisites
 
-- [mise](https://mise.jdx.dev/) (or install Ruby 4.0.2 and Node 24 manually)
-- [Dolt](https://docs.dolthub.com/introduction/installation) (MySQL-compatible database)
+- [mise](https://mise.jdx.dev/) (or install Ruby 4.0.2 and Node 24 manually - we don't recommend that)
+- PostgreSQL - `brew install postgresql` on mac with [Homebrew](https://brew.sh), or get it from [the website](https://www.postgresql.org/)
 - [Yarn](https://yarnpkg.com/)
 
 ## MCP
@@ -41,28 +39,7 @@ mise install
 
 This installs Ruby 4.0.2 and Node 24 as defined in `mise.toml`.
 
-### 3. Install Dolt
-
-```bash
-# macOS
-brew install dolt
-```
-
-Initialize a Dolt data directory (one-time):
-
-```bash
-mkdir -p ~/doltdb && cd ~/doltdb && dolt init
-```
-
-Start the Dolt SQL server:
-
-```bash
-cd ~/doltdb && dolt sql-server -u root
-```
-
-Dolt runs on port 3306 by default, just like MySQL. It needs to be running whenever you're working with the app.
-
-### 4. Install dependencies and prepare the database
+### 3. Install dependencies and prepare the database
 
 ```bash
 bin/setup --skip-server
